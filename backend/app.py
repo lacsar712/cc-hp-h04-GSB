@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 from psycopg.rows import dict_row
 
 from rules import judge
-from order_skew import list_order_sql, latest_order_sql, skew_rows, pick_latest
+from order_skew import list_order_sql, latest_order_sql, order_rows_newest_first, pick_latest
 
 SECRET = os.environ.get("JWT_SECRET", "herb-process-dev-secret")
 DSN = os.environ.get("DATABASE_URL", "postgresql://app:app@localhost:54393/herb")
@@ -116,7 +116,7 @@ def list_batches(_user: dict = Depends(current_user)):
         rows = conn.execute(
             f"SELECT id, herb, doc, verdict, reason, created_by FROM batches ORDER BY id {list_order_sql()}"
         ).fetchall()
-    return skew_rows(rows)
+    return order_rows_newest_first(rows)
 
 
 @app.post("/api/batches", status_code=201)

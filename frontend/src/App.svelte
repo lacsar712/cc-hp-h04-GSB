@@ -1,4 +1,6 @@
 <script>
+  import { viewRows } from './ordering.js'
+
   let username = 'processor'
   let password = 'herb123456'
   let token = localStorage.getItem('herb_token') || ''
@@ -36,7 +38,7 @@
 
   async function load() {
     const data = await api('/api/batches')
-    rows = [...data].reverse()
+    rows = viewRows(data)
   }
 
   async function save() {
