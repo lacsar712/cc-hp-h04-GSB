@@ -36,7 +36,7 @@
 
   async function load() {
     const data = await api('/api/batches')
-    rows = [...data].reverse()
+    rows = data
   }
 
   async function save() {
